@@ -11,7 +11,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Fjerner noget af Streamlits standardafstand og menu.
 st.markdown(
     """
     <style>
@@ -39,10 +38,7 @@ st.markdown(
 html_path = Path(__file__).parent / "index.html"
 
 if not html_path.exists():
-    st.error(
-        "Filen index.html blev ikke fundet. "
-        "Kontrollér, at index.html ligger i samme mappe som streamlit_app.py."
-    )
+    st.error("index.html blev ikke fundet.")
     st.stop()
 
 html_code = html_path.read_text(encoding="utf-8")
