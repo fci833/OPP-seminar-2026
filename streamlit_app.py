@@ -5,7 +5,7 @@ import streamlit as st
 
 
 # ============================================================
-# SIDEOPSÆTNING
+# OPSÆTNING
 # ============================================================
 
 st.set_page_config(
@@ -17,20 +17,27 @@ st.set_page_config(
 
 
 # ============================================================
-# INDSTILLINGER
-# Ret tider, adresser og øvrige oplysninger her.
+# ARRANGEMENTSOPLYSNINGER
+# Ret tider, adresser og tekster her.
 # ============================================================
 
 EVENT = {
     "title": "OPP Seminar 2026",
-    "tagline": "En dag med ny viden, fælles oplevelser og gode samtaler.",
-    "goboat_address": "Islands Brygge 10, 2300 København S",
+    "tagline": (
+        "En dag med ny viden, fælles oplevelser "
+        "og gode samtaler."
+    ),
+    "goboat_address": (
+        "Islands Brygge 10, 2300 København S"
+    ),
     "goboat_url": (
         "https://www.google.com/maps/search/"
         "?api=1&query=Islands+Brygge+10+2300+København+S"
     ),
     "dinner_location": "Vestauranten",
-    "dinner_address": "Tietgensgade 65, 1704 København V",
+    "dinner_address": (
+        "Tietgensgade 65, 1704 København V"
+    ),
     "dinner_url": (
         "https://www.google.com/maps/search/"
         "?api=1&query=Tietgensgade+65+1704+København+V"
@@ -41,9 +48,8 @@ EVENT = {
 # ============================================================
 # DELTAGERE
 #
-# Når du får den endelige deltagerliste, retter du initialerne
-# i teksten nedenfor. Grupperne bliver derefter automatisk
-# dannet igen.
+# Erstat denne liste, når du kender den endelige deltagerliste.
+# Grupperne dannes automatisk og stabilt.
 # ============================================================
 
 PARTICIPANTS_TEXT = """
@@ -62,22 +68,28 @@ UNBG VCTE VMKT WADS YSIK ZJHH ZLBK ZSLU ZSQN
 """
 
 participants = sorted(
-    set(
+    {
         value.strip().upper()
         for value in PARTICIPANTS_TEXT.split()
         if value.strip()
-    )
+    }
 )
 
 
 # ============================================================
-# AUTOMATISK OG STABIL GRUPPEFORDELING
+# AUTOMATISK GRUPPEFORDELING
 #
-# Grupperne bliver de samme ved hver genindlæsning.
+# Seed-værdierne betyder, at grupperne forbliver de samme,
+# når siden genindlæses.
 # ============================================================
 
-def make_balanced_groups(items, number_of_groups, seed):
-    shuffled = list(items)
+def make_balanced_groups(
+    participant_list,
+    number_of_groups,
+    seed,
+):
+    shuffled = list(participant_list)
+
     random_generator = random.Random(seed)
     random_generator.shuffle(shuffled)
 
@@ -118,6 +130,10 @@ groups = {
     ),
 }
 
+
+# ============================================================
+# LOKALER OG ROTATIONER
+# ============================================================
 
 EVOLVE_ROOMS = [
     "Vesterbro Torv",
@@ -166,26 +182,34 @@ AGENDA = [
         "number": 2,
         "time": "09:00–09:30",
         "title": "Velkomst",
-        "description": "Velkommen og introduktion til dagens program.",
+        "description": (
+            "Velkommen og introduktion til dagens program."
+        ),
     },
     {
         "number": 3,
         "time": "09:30–12:00",
         "title": "eVolve Workshop",
-        "description": "Workshop og samarbejde i egne teams.",
+        "description": (
+            "Workshop og samarbejde i egne teams."
+        ),
         "page": "eVolve",
     },
     {
         "number": 4,
         "time": "12:00–13:00",
         "title": "Frokost",
-        "description": "Frokost og mulighed for networking.",
+        "description": (
+            "Frokost og mulighed for networking."
+        ),
     },
     {
         "number": 5,
         "time": "13:00–15:00",
         "title": "AI Speed Dating – oplev AI",
-        "description": "Fire rotationer med forskellige AI-oplevelser.",
+        "description": (
+            "Fire rotationer med forskellige AI-oplevelser."
+        ),
         "page": "AI Speed Dating",
     },
     {
@@ -204,20 +228,26 @@ AGENDA = [
         "number": 8,
         "time": "15:45–17:30",
         "title": "GoBoat",
-        "description": "Se din gruppe og praktisk information.",
+        "description": (
+            "Se din gruppe og praktisk information."
+        ),
         "page": "GoBoat",
     },
     {
         "number": 9,
         "time": "17:30–18:00",
         "title": "Transport til middag",
-        "description": "Vi går samlet videre til middagen.",
+        "description": (
+            "Vi går samlet videre til middagen."
+        ),
     },
     {
         "number": 10,
         "time": "18:00–",
         "title": "Middag, networking og fest",
-        "description": "Se dit bord og information om lokationen.",
+        "description": (
+            "Se dit bord og information om lokationen."
+        ),
         "page": "Middag",
     },
 ]
@@ -225,10 +255,10 @@ AGENDA = [
 
 # ============================================================
 # DESIGN
-# Novo Nordisk-inspireret farveunivers uden officielt logo.
+# Novo Nordisk-inspirerede farver.
 # ============================================================
 
-st.markdown(
+st.html(
     """
     <style>
         :root {
@@ -240,9 +270,12 @@ st.markdown(
             --opp-light-blue: #dff4fb;
             --opp-pale-blue: #eef8fc;
             --opp-text: #071a33;
-            --opp-muted: #5a6d80;
+            --opp-muted: #536a80;
             --opp-border: #b9dff2;
             --opp-white: #ffffff;
+            --opp-shadow:
+                0 18px 45px rgba(0, 49, 92, 0.12),
+                0 4px 12px rgba(0, 49, 92, 0.06);
         }
 
         html {
@@ -282,13 +315,10 @@ st.markdown(
 
         .stMainBlockContainer,
         .block-container {
+            width: min(1120px, calc(100% - 24px));
             max-width: 1120px;
-            padding-top: 1.5rem;
+            padding-top: 1.2rem;
             padding-bottom: 4rem;
-        }
-
-        header[data-testid="stHeader"] {
-            background: rgba(255, 255, 255, 0.95);
         }
 
         #MainMenu {
@@ -299,28 +329,34 @@ st.markdown(
             visibility: hidden;
         }
 
+        header[data-testid="stHeader"] {
+            background: rgba(255, 255, 255, 0.92);
+        }
+
         /* Navigation */
 
         div[role="radiogroup"] {
             display: flex;
             width: 100%;
+            align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: 0.25rem;
             margin-bottom: 1.6rem;
             padding: 0.45rem;
             overflow-x: auto;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(0, 25, 101, 0.08);
-            border-radius: 18px;
+            border-radius: 17px;
             box-shadow:
                 0 8px 24px rgba(0, 49, 92, 0.07);
         }
 
         div[role="radiogroup"] label {
-            padding: 0.6rem 0.65rem;
+            padding: 0.55rem 0.7rem;
             color: var(--opp-dark-navy);
-            border-radius: 11px;
+            border-radius: 10px;
             white-space: nowrap;
+            font-size: 0.86rem;
             font-weight: 800;
         }
 
@@ -344,18 +380,28 @@ st.markdown(
                     #003c89 100%
                 );
             border-radius: 28px;
-            box-shadow:
-                0 20px 50px rgba(0, 49, 92, 0.14);
+            box-shadow: var(--opp-shadow);
         }
 
         .opp-hero::before {
             position: absolute;
-            width: 160px;
-            height: 160px;
-            top: -105px;
+            width: 165px;
+            height: 165px;
+            top: -110px;
             right: -50px;
             content: "";
             border: 30px solid rgba(79, 220, 244, 0.15);
+            border-radius: 50%;
+        }
+
+        .opp-hero::after {
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            right: 55px;
+            bottom: -170px;
+            content: "";
+            background: rgba(0, 184, 222, 0.08);
             border-radius: 50%;
         }
 
@@ -370,10 +416,14 @@ st.markdown(
             z-index: 1;
             margin: 0 0 0.7rem;
             color: #4fdcf4;
-            font-size: 0.77rem;
+            font-size: 0.76rem;
             font-weight: 900;
             letter-spacing: 0.18em;
             text-transform: uppercase;
+        }
+
+        .opp-eyebrow-blue {
+            color: var(--opp-blue);
         }
 
         .opp-hero-light .opp-eyebrow {
@@ -383,7 +433,7 @@ st.markdown(
         .opp-hero h1 {
             position: relative;
             z-index: 1;
-            margin: 0 0 0.75rem;
+            margin: 0 0 0.8rem;
             color: inherit;
             font-size: clamp(2.3rem, 6vw, 4rem);
             line-height: 1.04;
@@ -397,9 +447,9 @@ st.markdown(
         .opp-lead {
             position: relative;
             z-index: 1;
-            max-width: 750px;
+            max-width: 760px;
             margin: 0;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.86);
             font-size: 1.08rem;
             line-height: 1.65;
         }
@@ -413,14 +463,14 @@ st.markdown(
         .opp-section-heading {
             margin: 2.2rem 0 1rem;
             color: var(--opp-dark-navy);
-            font-size: 2rem;
+            font-size: clamp(1.55rem, 4vw, 2rem);
             font-weight: 850;
             letter-spacing: -0.025em;
         }
 
         .opp-intro {
             max-width: 780px;
-            margin: -0.4rem 0 1.4rem;
+            margin: -0.45rem 0 1.4rem;
             color: var(--opp-muted);
             line-height: 1.65;
         }
@@ -432,8 +482,7 @@ st.markdown(
             background: white;
             border: 1px solid rgba(0, 90, 210, 0.09);
             border-radius: 20px;
-            box-shadow:
-                0 18px 45px rgba(0, 49, 92, 0.11);
+            box-shadow: var(--opp-shadow);
         }
 
         .agenda-row {
@@ -496,7 +545,7 @@ st.markdown(
             font-weight: 900;
         }
 
-        /* Informationskort */
+        /* Generelle kort */
 
         .info-card {
             margin: 1rem 0;
@@ -504,19 +553,19 @@ st.markdown(
             background: white;
             border: 1px solid rgba(0, 90, 210, 0.09);
             border-radius: 20px;
-            box-shadow:
-                0 15px 38px rgba(0, 49, 92, 0.10);
+            box-shadow: var(--opp-shadow);
         }
 
         .info-card h3 {
             margin: 0 0 0.5rem;
             color: var(--opp-dark-navy);
+            font-size: 1.35rem;
         }
 
         .info-card p {
             margin: 0;
             color: var(--opp-muted);
-            line-height: 1.6;
+            line-height: 1.65;
         }
 
         .location-card {
@@ -529,13 +578,13 @@ st.markdown(
             background: white;
             border: 1px solid rgba(0, 90, 210, 0.09);
             border-radius: 20px;
-            box-shadow:
-                0 15px 38px rgba(0, 49, 92, 0.10);
+            box-shadow: var(--opp-shadow);
         }
 
         .location-card h3 {
             margin: 0.25rem 0 0.4rem;
             color: var(--opp-dark-navy);
+            font-size: 1.25rem;
         }
 
         .location-card p {
@@ -567,13 +616,12 @@ st.markdown(
 
         .group-card {
             overflow: hidden;
-            min-height: 300px;
+            min-height: 280px;
             margin-bottom: 1.3rem;
             background: white;
             border: 1px solid rgba(0, 90, 210, 0.09);
             border-radius: 20px;
-            box-shadow:
-                0 16px 40px rgba(0, 49, 92, 0.11);
+            box-shadow: var(--opp-shadow);
         }
 
         .group-header {
@@ -629,6 +677,7 @@ st.markdown(
 
         .member {
             padding: 0.76rem 0 0.65rem;
+            color: var(--opp-text);
             border-bottom: 1px solid var(--opp-border);
             font-size: 0.9rem;
             font-weight: 800;
@@ -638,15 +687,15 @@ st.markdown(
             border-bottom: 0;
         }
 
-        /* Personlig oversigt */
+        /* Find mig */
 
         .person-card {
             overflow: hidden;
             margin-top: 1.4rem;
             background: white;
+            border: 1px solid rgba(0, 90, 210, 0.09);
             border-radius: 20px;
-            box-shadow:
-                0 18px 45px rgba(0, 49, 92, 0.12);
+            box-shadow: var(--opp-shadow);
         }
 
         .person-header {
@@ -667,6 +716,11 @@ st.markdown(
         .person-initials {
             font-size: 1.5rem;
             font-weight: 900;
+        }
+
+        .person-subtitle {
+            color: #c7efff;
+            font-weight: 700;
         }
 
         .person-grid {
@@ -700,6 +754,55 @@ st.markdown(
             line-height: 1.5;
         }
 
+        /* Tabel */
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            background: white;
+            border: 1px solid rgba(0, 90, 210, 0.10);
+            border-radius: 18px;
+            box-shadow: var(--opp-shadow);
+        }
+
+        .opp-table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+        .opp-table th {
+            padding: 1rem;
+            color: white;
+            background: var(--opp-navy);
+            text-align: left;
+            font-size: 0.84rem;
+            vertical-align: top;
+        }
+
+        .opp-table th small {
+            display: block;
+            margin-top: 0.2rem;
+            color: #bdefff;
+            font-size: 0.7rem;
+        }
+
+        .opp-table td {
+            padding: 1rem;
+            color: var(--opp-text);
+            border-bottom: 1px solid var(--opp-border);
+            font-size: 0.9rem;
+            font-weight: 750;
+        }
+
+        .opp-table tbody tr:nth-child(even) {
+            background: #f7fbfd;
+        }
+
+        .opp-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
         /* Rumoversigt */
 
         .room-map {
@@ -713,8 +816,7 @@ st.markdown(
             background: #e5ecef;
             border: 1px solid #cbdde7;
             border-radius: 20px;
-            box-shadow:
-                0 15px 38px rgba(0, 49, 92, 0.10);
+            box-shadow: var(--opp-shadow);
         }
 
         .room {
@@ -788,7 +890,8 @@ st.markdown(
 
         div[data-testid="stTextInput"] input:focus {
             border-color: var(--opp-blue);
-            box-shadow: 0 0 0 2px rgba(0, 90, 210, 0.12);
+            box-shadow:
+                0 0 0 2px rgba(0, 90, 210, 0.12);
         }
 
         div[data-testid="stButton"] button {
@@ -806,23 +909,14 @@ st.markdown(
             border: 0;
         }
 
-        div[data-testid="stDataFrame"],
-        div[data-testid="stTable"] {
-            overflow: hidden;
-            background: white;
-            border: 1px solid rgba(0, 90, 210, 0.10);
-            border-radius: 18px;
-            box-shadow:
-                0 14px 35px rgba(0, 49, 92, 0.09);
-        }
-
         /* Footer */
 
         .opp-footer {
             margin-top: 4rem;
             padding: 2rem 1rem 0.5rem;
             color: var(--opp-dark-navy);
-            border-top: 1px solid rgba(0, 25, 101, 0.09);
+            border-top:
+                1px solid rgba(0, 25, 101, 0.09);
             text-align: center;
             font-size: 0.86rem;
             font-weight: 800;
@@ -835,8 +929,9 @@ st.markdown(
         @media (max-width: 800px) {
             .stMainBlockContainer,
             .block-container {
-                padding-right: 0.7rem;
-                padding-left: 0.7rem;
+                width: calc(100% - 14px);
+                padding-right: 0.4rem;
+                padding-left: 0.4rem;
             }
 
             .opp-hero {
@@ -873,7 +968,8 @@ st.markdown(
             }
 
             .person-item:nth-child(-n + 2) {
-                border-bottom: 1px solid var(--opp-border);
+                border-bottom:
+                    1px solid var(--opp-border);
             }
 
             .location-card {
@@ -900,7 +996,7 @@ st.markdown(
             }
 
             div[role="radiogroup"] label {
-                font-size: 0.75rem;
+                font-size: 0.72rem;
             }
 
             .person-grid {
@@ -910,7 +1006,8 @@ st.markdown(
             .person-item,
             .person-item:nth-child(2) {
                 border-right: 0;
-                border-bottom: 1px solid var(--opp-border);
+                border-bottom:
+                    1px solid var(--opp-border);
             }
 
             .person-item:last-child {
@@ -922,8 +1019,7 @@ st.markdown(
             }
         }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -932,13 +1028,19 @@ st.markdown(
 # ============================================================
 
 def safe(value):
+    """Beskytter tekst, der indsættes i HTML."""
     return html.escape(str(value))
 
 
-def hero(eyebrow, title, description, light=False):
+def hero(
+    eyebrow,
+    title,
+    description,
+    light=False,
+):
     light_class = " opp-hero-light" if light else ""
 
-    st.markdown(
+    st.html(
         f"""
         <section class="opp-hero{light_class}">
             <div class="opp-eyebrow">
@@ -951,26 +1053,34 @@ def hero(eyebrow, title, description, light=False):
                 {safe(description)}
             </p>
         </section>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
 def section_heading(title, intro=None):
-    st.markdown(
-        f'<div class="opp-section-heading">{safe(title)}</div>',
-        unsafe_allow_html=True,
+    st.html(
+        f"""
+        <div class="opp-section-heading">
+            {safe(title)}
+        </div>
+        """
     )
 
     if intro:
-        st.markdown(
-            f'<div class="opp-intro">{safe(intro)}</div>',
-            unsafe_allow_html=True,
+        st.html(
+            f"""
+            <div class="opp-intro">
+                {safe(intro)}
+            </div>
+            """
         )
 
 
 def find_group_number(collection, initials):
-    for group_number, members in enumerate(collection, start=1):
+    for group_number, members in enumerate(
+        collection,
+        start=1,
+    ):
         if initials in members:
             return group_number
 
@@ -982,7 +1092,9 @@ def group_card(title, members, room=None):
 
     if room:
         room_html = (
-            f'<div class="group-room">{safe(room)}</div>'
+            '<div class="group-room">'
+            f"{safe(room)}"
+            "</div>"
         )
 
     member_html = "".join(
@@ -990,7 +1102,7 @@ def group_card(title, members, room=None):
         for member in members
     )
 
-    st.markdown(
+    st.html(
         f"""
         <article class="group-card">
             <header class="group-header">
@@ -1005,15 +1117,22 @@ def group_card(title, members, room=None):
                 {member_html}
             </ul>
         </article>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
-def render_group_grid(collection, title_prefix, rooms=None):
+def render_group_grid(
+    collection,
+    title_prefix,
+    rooms=None,
+):
     rooms = rooms or []
 
-    for start_index in range(0, len(collection), 2):
+    for start_index in range(
+        0,
+        len(collection),
+        2,
+    ):
         columns = st.columns(2, gap="medium")
 
         for offset in range(2):
@@ -1022,26 +1141,36 @@ def render_group_grid(collection, title_prefix, rooms=None):
             if group_index >= len(collection):
                 continue
 
-            room = (
-                rooms[group_index]
-                if group_index < len(rooms)
-                else None
-            )
+            room = None
+
+            if group_index < len(rooms):
+                room = rooms[group_index]
 
             with columns[offset]:
                 group_card(
-                    title=f"{title_prefix} {group_index + 1}",
+                    title=(
+                        f"{title_prefix} "
+                        f"{group_index + 1}"
+                    ),
                     members=collection[group_index],
                     room=room,
                 )
 
 
-def location_card(label, title, description, url):
-    st.markdown(
+def location_card(
+    label,
+    title,
+    description,
+    url,
+):
+    st.html(
         f"""
         <section class="location-card">
             <div>
-                <div class="opp-eyebrow">{safe(label)}</div>
+                <div class="opp-eyebrow opp-eyebrow-blue">
+                    {safe(label)}
+                </div>
+
                 <h3>{safe(title)}</h3>
                 <p>{safe(description)}</p>
             </div>
@@ -1055,9 +1184,45 @@ def location_card(label, title, description, url):
                 Åbn adresse i kort →
             </a>
         </section>
-        """,
-        unsafe_allow_html=True,
+        """
     )
+
+
+def create_table(headers, rows):
+    header_html = "".join(
+        f"<th>{header}</th>"
+        for header in headers
+    )
+
+    body_html = ""
+
+    for row in rows:
+        cells = "".join(
+            f"<td>{safe(cell)}</td>"
+            for cell in row
+        )
+
+        body_html += f"<tr>{cells}</tr>"
+
+    st.html(
+        f"""
+        <div class="table-wrapper">
+            <table class="opp-table">
+                <thead>
+                    <tr>{header_html}</tr>
+                </thead>
+
+                <tbody>
+                    {body_html}
+                </tbody>
+            </table>
+        </div>
+        """
+    )
+
+
+def change_page(page_name):
+    st.session_state["navigation"] = page_name
 
 
 # ============================================================
@@ -1073,13 +1238,13 @@ PAGES = [
     "Middag",
 ]
 
-if "page" not in st.session_state:
-    st.session_state.page = "Agenda"
+if "navigation" not in st.session_state:
+    st.session_state["navigation"] = "Agenda"
 
 selected_page = st.radio(
     "Navigation",
     PAGES,
-    key="page",
+    key="navigation",
     horizontal=True,
     label_visibility="collapsed",
 )
@@ -1092,15 +1257,20 @@ selected_page = st.radio(
 def render_agenda():
     hero(
         eyebrow="Sammen om fremtiden",
-        title='OPP Seminar <span class="opp-highlight">2026</span>',
+        title=(
+            'OPP Seminar '
+            '<span class="opp-highlight">2026</span>'
+        ),
         description=EVENT["tagline"],
+        light=False,
     )
 
-    st.markdown(
-        '<div class="opp-eyebrow" style="color:#005ad2;">'
-        "Dagens program"
-        "</div>",
-        unsafe_allow_html=True,
+    st.html(
+        """
+        <div class="opp-eyebrow opp-eyebrow-blue">
+            Dagens program
+        </div>
+        """
     )
 
     section_heading("Agenda")
@@ -1142,74 +1312,82 @@ def render_agenda():
             """
         )
 
-    st.markdown(
+    st.html(
         '<div class="agenda-list">'
         + "".join(rows)
-        + "</div>",
-        unsafe_allow_html=True,
+        + "</div>"
     )
 
     section_heading("Gå direkte til")
 
-    quick_columns = st.columns(4)
+    first_row = st.columns(3, gap="small")
 
-    with quick_columns[0]:
-        if st.button(
+    with first_row[0]:
+        st.button(
+            "Find mig",
+            use_container_width=True,
+            on_click=change_page,
+            args=("Find mig",),
+        )
+
+    with first_row[1]:
+        st.button(
             "eVolve Workshop",
             use_container_width=True,
-        ):
-            st.session_state.page = "eVolve"
-            st.rerun()
+            on_click=change_page,
+            args=("eVolve",),
+        )
 
-    with quick_columns[1]:
-        if st.button(
+    with first_row[2]:
+        st.button(
             "AI Speed Dating",
             use_container_width=True,
-        ):
-            st.session_state.page = "AI Speed Dating"
-            st.rerun()
+            on_click=change_page,
+            args=("AI Speed Dating",),
+        )
 
-    with quick_columns[2]:
-        if st.button(
+    second_row = st.columns(2, gap="small")
+
+    with second_row[0]:
+        st.button(
             "GoBoat",
             use_container_width=True,
-        ):
-            st.session_state.page = "GoBoat"
-            st.rerun()
+            on_click=change_page,
+            args=("GoBoat",),
+        )
 
-    with quick_columns[3]:
-        if st.button(
+    with second_row[1]:
+        st.button(
             "Middag",
             use_container_width=True,
-        ):
-            st.session_state.page = "Middag"
-            st.rerun()
+            on_click=change_page,
+            args=("Middag",),
+        )
 
-    st.markdown(
+    st.html(
         """
-        <section class="info-card" style="margin-top:2rem;">
-            <div class="opp-eyebrow">
+        <section class="info-card"
+                 style="margin-top:2rem;">
+            <div class="opp-eyebrow opp-eyebrow-blue">
                 Din personlige oversigt
             </div>
 
             <h3>Find mig</h3>
 
             <p>
-                Søg på dine initialer og se dit eVolve-team,
-                din AI-gruppe, dit GoBoat-hold og dit
-                middagsbord.
+                Søg på dine initialer og se dit
+                eVolve-team, din AI-gruppe,
+                dit GoBoat-hold og dit middagsbord.
             </p>
         </section>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
-    if st.button(
+    st.button(
         "Søg efter mine initialer →",
-        use_container_width=False,
-    ):
-        st.session_state.page = "Find mig"
-        st.rerun()
+        on_click=change_page,
+        args=("Find mig",),
+    )
 
 
 # ============================================================
@@ -1290,9 +1468,11 @@ def render_find_me():
         initials,
     )
 
-    evolve_room = EVOLVE_ROOMS[evolve_group - 1]
+    evolve_room = EVOLVE_ROOMS[
+        evolve_group - 1
+    ]
 
-    st.markdown(
+    st.html(
         f"""
         <article class="person-card">
             <header class="person-header">
@@ -1300,7 +1480,9 @@ def render_find_me():
                     {safe(initials)}
                 </div>
 
-                <div>Personlig oversigt</div>
+                <div class="person-subtitle">
+                    Personlig oversigt
+                </div>
             </header>
 
             <div class="person-grid">
@@ -1346,13 +1528,12 @@ def render_find_me():
                 </div>
             </div>
         </article>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
 # ============================================================
-# EVOLVE
+# EVOLVE WORKSHOP
 # ============================================================
 
 def render_evolve():
@@ -1368,87 +1549,125 @@ def render_evolve():
 
     section_heading("Teams og rum")
 
-    team_table = []
+    table_rows = []
 
-    for index, group in enumerate(groups["evolve"]):
-        team_table.append(
-            {
-                "Team": f"Team {index + 1}",
-                "Lokale": EVOLVE_ROOMS[index],
-                "Antal deltagere": len(group),
-            }
+    for index, group in enumerate(
+        groups["evolve"]
+    ):
+        table_rows.append(
+            [
+                f"Team {index + 1}",
+                EVOLVE_ROOMS[index],
+                len(group),
+            ]
         )
 
-    st.table(team_table)
+    create_table(
+        headers=[
+            "Team",
+            "Lokale",
+            "Antal deltagere",
+        ],
+        rows=table_rows,
+    )
 
     section_heading(
         "Rumoversigt",
-        "Dette er en skematisk oversigt. Den kan senere "
-        "erstattes med afdelingens endelige plantegning.",
+        (
+            "Dette er en skematisk oversigt. "
+            "Den kan senere erstattes med "
+            "den endelige plantegning."
+        ),
     )
 
-    st.markdown(
+    st.html(
         """
         <div class="room-map">
             <div
                 class="room room-terrace"
-                style="grid-column:1 / 3; grid-row:1 / 5;"
+                style="
+                    grid-column:1 / 3;
+                    grid-row:1 / 5;
+                "
             >
-                Tagterrassen<br>Team 5
+                Tagterrassen<br>
+                Team 5
             </div>
 
             <div
                 class="room room-orange"
-                style="grid-column:3; grid-row:1;"
+                style="
+                    grid-column:3;
+                    grid-row:1;
+                "
             >
-                Tivoli<br>Team 6
+                Tivoli<br>
+                Team 6
             </div>
 
             <div
                 class="room room-teal"
-                style="grid-column:3; grid-row:2;"
+                style="
+                    grid-column:3;
+                    grid-row:2;
+                "
             >
-                Vesterbro Torv<br>Team 1
+                Vesterbro Torv<br>
+                Team 1
             </div>
 
             <div
                 class="room room-cyan"
-                style="grid-column:3; grid-row:3;"
+                style="
+                    grid-column:3;
+                    grid-row:3;
+                "
             >
-                Enghave Plads<br>Team 2
+                Enghave Plads<br>
+                Team 2
             </div>
 
             <div
                 class="room room-blue"
-                style="grid-column:3; grid-row:4;"
+                style="
+                    grid-column:3;
+                    grid-row:4;
+                "
             >
-                Kødbyen<br>Team 4
+                Kødbyen<br>
+                Team 4
             </div>
 
             <div
                 class="room room-grey"
-                style="grid-column:4; grid-row:1 / 4;"
+                style="
+                    grid-column:4;
+                    grid-row:1 / 4;
+                "
             >
-                Foye<br>Team 3
+                Foye<br>
+                Team 3
             </div>
 
             <div
                 class="room room-navy"
-                style="grid-column:4; grid-row:4;"
+                style="
+                    grid-column:4;
+                    grid-row:4;
+                "
             >
                 Trappe og elevator
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     section_heading("Teamoversigt")
 
     render_group_grid(
-        groups["evolve"],
-        "Team",
-        EVOLVE_ROOMS,
+        collection=groups["evolve"],
+        title_prefix="Team",
+        rooms=EVOLVE_ROOMS,
     )
 
 
@@ -1469,81 +1688,112 @@ def render_ai():
 
     section_heading(
         "Rotationsskema",
-        "Hver gruppe besøger alle fire AI-oplevelser.",
+        (
+            "Hver gruppe besøger alle fire "
+            "AI-oplevelser."
+        ),
     )
 
-    rotation_table = []
+    rotation_rows = []
 
-    for index, rotation in enumerate(AI_ROTATIONS):
-        rotation_table.append(
-            {
-                "Gruppe": f"AI-gruppe {index + 1}",
-                "Runde 1\n13:25–13:40": rotation[0],
-                "Runde 2\n13:45–14:00": rotation[1],
-                "Runde 3\n14:05–14:20": rotation[2],
-                "Runde 4\n14:25–14:40": rotation[3],
-            }
+    for index, rotation in enumerate(
+        AI_ROTATIONS
+    ):
+        rotation_rows.append(
+            [
+                f"AI-gruppe {index + 1}",
+                rotation[0],
+                rotation[1],
+                rotation[2],
+                rotation[3],
+            ]
         )
 
-    st.table(rotation_table)
+    create_table(
+        headers=[
+            "Gruppe",
+            "Runde 1<br><small>13:25–13:40</small>",
+            "Runde 2<br><small>13:45–14:00</small>",
+            "Runde 3<br><small>14:05–14:20</small>",
+            "Runde 4<br><small>14:25–14:40</small>",
+        ],
+        rows=rotation_rows,
+    )
 
     section_heading("Rumoversigt")
 
-    st.markdown(
+    st.html(
         """
         <div class="room-map">
             <div
                 class="room room-terrace"
-                style="grid-column:1 / 3; grid-row:1 / 5;"
+                style="
+                    grid-column:1 / 3;
+                    grid-row:1 / 5;
+                "
             >
                 Tagterrasse
             </div>
 
             <div
                 class="room room-orange"
-                style="grid-column:3; grid-row:1;"
+                style="
+                    grid-column:3;
+                    grid-row:1;
+                "
             >
                 Dating Lounge
             </div>
 
             <div
                 class="room room-teal"
-                style="grid-column:3; grid-row:2;"
+                style="
+                    grid-column:3;
+                    grid-row:2;
+                "
             >
                 Prompt Heaven
             </div>
 
             <div
                 class="room room-purple"
-                style="grid-column:3; grid-row:3;"
+                style="
+                    grid-column:3;
+                    grid-row:3;
+                "
             >
                 Private Room
             </div>
 
             <div
                 class="room room-blue"
-                style="grid-column:3; grid-row:4;"
+                style="
+                    grid-column:3;
+                    grid-row:4;
+                "
             >
                 Escape Room
             </div>
 
             <div
                 class="room room-grey"
-                style="grid-column:4; grid-row:1 / 5;"
+                style="
+                    grid-column:4;
+                    grid-row:1 / 5;
+                "
             >
                 Fællesområde<br>
                 Elevator og toiletter
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     section_heading("AI-grupper")
 
     render_group_grid(
-        groups["ai"],
-        "AI-gruppe",
+        collection=groups["ai"],
+        title_prefix="AI-gruppe",
     )
 
 
@@ -1556,7 +1806,8 @@ def render_goboat():
         eyebrow="15:45–17:30",
         title="GoBoat",
         description=(
-            "Find din gruppe og se adressen for aktiviteten."
+            "Find din gruppe og se adressen "
+            "for aktiviteten."
         ),
         light=True,
     )
@@ -1571,25 +1822,24 @@ def render_goboat():
         url=EVENT["goboat_url"],
     )
 
-    st.markdown(
+    st.html(
         """
         <section class="info-card">
             <h3>Praktisk information</h3>
 
             <p>
-                Mød op i god tid og følg arrangørernes
-                instruktioner ved kajen.
+                Mød op i god tid og følg
+                arrangørernes instruktioner ved kajen.
             </p>
         </section>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     section_heading("GoBoat-grupper")
 
     render_group_grid(
-        groups["goboat"],
-        "GoBoat-gruppe",
+        collection=groups["goboat"],
+        title_prefix="GoBoat-gruppe",
     )
 
 
@@ -1602,8 +1852,8 @@ def render_dinner():
         eyebrow="18:00–",
         title="Middag, networking og fest",
         description=(
-            "Find dit middagsbord og praktisk information "
-            "om lokationen."
+            "Find dit middagsbord og praktisk "
+            "information om lokationen."
         ),
         light=True,
     )
@@ -1617,46 +1867,57 @@ def render_dinner():
 
     section_heading("Lokationsoversigt")
 
-    st.markdown(
+    st.html(
         f"""
         <div class="room-map">
             <div
                 class="room room-navy"
-                style="grid-column:1 / 3; grid-row:1 / 5;"
+                style="
+                    grid-column:1 / 3;
+                    grid-row:1 / 5;
+                "
             >
                 Konference- og festområde
             </div>
 
             <div
                 class="room room-blue"
-                style="grid-column:3 / 5; grid-row:1 / 4;"
+                style="
+                    grid-column:3 / 5;
+                    grid-row:1 / 4;
+                "
             >
                 {safe(EVENT["dinner_location"])}
             </div>
 
             <div
                 class="room room-cyan"
-                style="grid-column:3; grid-row:4;"
+                style="
+                    grid-column:3;
+                    grid-row:4;
+                "
             >
                 Hovedindgang
             </div>
 
             <div
                 class="room room-grey"
-                style="grid-column:4; grid-row:4;"
+                style="
+                    grid-column:4;
+                    grid-row:4;
+                "
             >
                 Parkering
             </div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     section_heading("Middagsborde")
 
     render_group_grid(
-        groups["dinner"],
-        "Bord",
+        collection=groups["dinner"],
+        title_prefix="Bord",
     )
 
 
@@ -1687,7 +1948,7 @@ elif selected_page == "Middag":
 # FOOTER
 # ============================================================
 
-st.markdown(
+st.html(
     """
     <footer class="opp-footer">
         <div>
@@ -1696,9 +1957,8 @@ st.markdown(
         </div>
 
         <div>
-            Made By FCI & KUQA
+            Made By af FCI & KUQA
         </div>
     </footer>
-    """,
-    unsafe_allow_html=True,
+    """
 )
