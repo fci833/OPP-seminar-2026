@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="OPP Seminar – agenda, gruppeoversigter, aktiviteter og personlig søgning."
+  >
+
+  <title>OPP Seminar</title>
+
+  <style>
+    /* =========================================================
+       FARVER OG DESIGN
+       Farverne er inspireret af Novo Nordisks visuelle univers.
+       Der anvendes ikke officielle logoer eller brand-elementer.
+       ========================================================= */
+
+    :root {
+      --nn-navy: #001965;
+      --nn-deep-navy: #00113f;
+      --nn-blue: #005ad2;
+      --nn-medium-blue: #0075c9;
+      --nn-cyan: #00b8de;
+      --nn-light-blue: #dff4fb;
+      --nn-pale-blue: #eef8fc;
+
+      --text: #061a33;
+      --muted: #52677d;
+      --white: #ffffff;
+      --surface: #ffffff;
+      --surface-soft: #f7fbfd;
+      --border: #b9dff2;
+
+      --shadow:
+        0 18px 45px rgba(0, 51, 102, 0.12),
+        0 4px 12px rgba(0, 51, 102, 0.06);
+
+      --radius-large: 28px;
+      --radius-medium: 20px;
+      --radius-small: 13px;
+
+      --content-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 22%, rgba(0, 184, 222, 0.08), transparent 24rem),
+        radial-gradient(circle at 92% 72%, rgba(0, 90, 210, 0.07), transparent 30rem),
+        linear-gradient(180deg, #f7fbfd 0%, #eaf6fb 100%);
+      font-family:
+        Inter,
+        Aptos,
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+    button,
+    input,
+    a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      border: 0;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid rgba(0, 25, 101, 0.08);
+      box-shadow: 0 4px 18px rgba(0, 25, 101, 0.05);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(var(--content-width), calc(100% - 32px));
+      min-height: 78px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 34px;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 14px 10px;
+      color: var(--nn-deep-navy);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav-link::after {
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      left: 10px;
+      height: 3px;
+      content: "";
+      background: var(--nn-cyan);
+      border-radius: 100px;
+      transform: scaleX(0);
+      transition: transform 180ms ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      transform: scaleX(1);
+    }
+
+    .page-shell {
+      width: min(var(--content-width), calc(100% - 32px));
+      min-height: calc(100vh - 180px);
+      margin: 0 auto;
+      padding: 44px 0 72px;
+    }
+
+    .page-hero {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 34px;
+      padding: 40px 44px;
+      background:
+        linear-gradient(135deg, var(--nn-deep-navy), var(--nn-navy));
+      color: var(--white);
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+    }
+
+    .page-hero.light {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.83);
+      border: 1px solid rgba(0, 90, 210, 0.08);
+    }
+
+    .page-hero::before,
+    .page-hero::after {
+      position: absolute;
+      content: "";
+      border: 30px solid rgba(0, 184, 222, 0.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .page-hero::before {
+      width: 150px;
+      height: 150px;
+      top: -95px;
+      right: -50px;
+    }
+
+    .page-hero::after {
+      width: 190px;
+      height: 190px;
+      right: 50px;
+      bottom: -170px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--nn-cyan);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .page-hero.light .eyebrow {
+      color: var(--nn-blue);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin-bottom: 14px;
+      font-size: clamp(2.35rem, 6vw, 4.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: var(--nn-deep-navy);
+      font-size: clamp(1.65rem, 4vw, 2.35rem);
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      color: var(--nn-deep-navy);
+    }
+
+    .lead {
+      max-width: 750px;
+      margin-bottom: 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+
+    .page-hero.light .lead {
+      color: var(--muted);
+    }
+
+    .hero-highlight {
+      color: #4fdcf4;
+    }
+
+    .section {
+      margin-top: 38px;
+    }
+
+    .section-heading {
+      margin-bottom: 8px;
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-bottom: 22px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(0, 90, 210, 0.08);
+      border-radius: var(--radius-medium);
+      box-shadow: var(--shadow);
+    }
+
+    .link-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      margin-top: 28px;
+      padding: 24px;
+      color: var(--white);
+      background: rgba(0, 90, 210, 0.28);
+      border: 1px solid rgba(79, 220, 244, 0.25);
+      border-radius: var(--radius-medium);
+    }
+
+    .link-panel strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+    }
+
+    .link-panel span {
+      color: rgba(255, 255, 255, 0.78);
+      word-break: break-all;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      color: var(--white);
+      background: var(--nn-navy);
+      border: 1px solid transparent;
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(0, 25, 101, 0.2);
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 850;
+      transition:
+        transform 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease;
+    }
+
+    .button:hover {
+      background: var(--nn-blue);
+      box-shadow: 0 11px 25px rgba(0, 90, 210, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .button.secondary {
+      color: var(--nn-navy);
+      background: var(--white);
+      border-color: var(--border);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: var(--nn-light-blue);
+    }
+
+    /* Agenda */
+
+    .agenda-list {
+      overflow: hidden;
+    }
+
+    .agenda-row {
+      display: grid;
+      grid-template-columns: 46px 130px minmax(0, 1fr) 38px;
+      align-items: center;
+      gap: 18px;
+      min-height: 96px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .agenda-row:last-child {
+      border-bottom: 0;
+    }
+
+    .agenda-row:hover {
+      background: var(--surface-soft);
+    }
+
+    .agenda-number {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      color: var(--nn-navy);
+      background: #bce5fa;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 900;
+    }
+
+    .agenda-row.has-link .agenda-number {
+      color: var(--white);
+      background: var(--nn-navy);
+    }
+
+    .agenda-time {
+      color: var(--nn-navy);
+      font-weight: 900;
+    }
+
+    .agenda-title {
+      margin-bottom: 4px;
+      font-size: 1.08rem;
+      font-weight: 900;
+    }
+
+    .agenda-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .agenda-arrow {
+      color: var(--nn-blue);
+      font-size: 1.65rem;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .find-callout {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 25px;
+      margin-top: 38px;
+      padding: 32px;
+    }
+
+    .find-callout p {
+      max-width: 670px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Find mig */
+
+    .search-card {
+      padding: 30px;
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--nn-deep-navy);
+      font-weight: 900;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 64px;
+      padding: 0 18px;
+      background: var(--white);
+      border: 2px solid #acdff6;
+      border-radius: 16px;
+      box-shadow: 0 4px 0 rgba(0, 90, 210, 0.06);
+    }
+
+    .search-icon {
+      color: var(--nn-blue);
+      font-size: 1.4rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 18px 0;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font-size: 1.08rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .search-input::placeholder {
+      color: #8da0b6;
+      font-weight: 500;
+      text-transform: none;
+    }
+
+    .search-help {
+      margin: 15px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .search-results {
+      display: grid;
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .person-result {
+      overflow: hidden;
+    }
+
+    .person-result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 24px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--nn-navy), var(--nn-blue));
+    }
+
+    .person-result-header h3 {
+      margin: 0;
+      color: var(--white);
+      font-size: 1.45rem;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .result-item {
+      min-height: 125px;
+      padding: 22px;
+      border-right: 1px solid var(--border);
+    }
+
+    .result-item:last-child {
+      border-right: 0;
+    }
+
+    .result-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      color: var(--nn-deep-navy);
+      font-size: 1.05rem;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .empty-state {
+      padding: 28px;
+      text-align: center;
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 16px;
+    }
+
+    .suggestion {
+      padding: 8px 12px;
+      color: var(--nn-navy);
+      background: var(--nn-light-blue);
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    /* Gruppekort */
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .group-card {
+      overflow: hidden;
+    }
+
+    .group-header {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      min-height: 78px;
+      align-items: center;
+      gap: 13px;
+      padding: 20px 24px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--nn-deep-navy), var(--nn-navy));
+    }
+
+    .group-header::after {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      top: -62px;
+      right: -28px;
+      content: "";
+      background: rgba(0, 184, 222, 0.12);
+      border-radius: 50%;
+    }
+
+    .group-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      place-items: center;
+      background: rgba(0, 184, 222, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 11px;
+    }
+
+    .group-header h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--white);
+      font-size: 1.08rem;
+    }
+
+    .group-room {
+      margin-left: auto;
+      color: #bdefff;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .members {
+      margin: 0;
+      padding: 0 24px 18px;
+      list-style: none;
+    }
+
+    .member {
+      padding: 14px 0 12px;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      font-weight: 800;
+    }
+
+    .member:last-child {
+      border-bottom: 0;
+    }
+
+    /* Tabeller */
+
+    .table-card {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 780px;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 17px 18px;
+      color: var(--white);
+      background: var(--nn-navy);
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    th small {
+      display: block;
+      margin-top: 4px;
+      color: #bfeeff;
+      font-weight: 700;
+    }
+
+    td {
+      padding: 20px 18px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--surface-soft);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    /* Skematisk rumoversigt */
+
+    .room-map-card {
+      padding: 18px;
+    }
+
+    .room-map {
+      display: grid;
+      min-height: 500px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 8px;
+      padding: 16px;
+      background: #e8edf0;
+      border: 1px solid #cbdce6;
+      border-radius: 18px;
+    }
+
+    .room {
+      display: flex;
+      min-height: 105px;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      color: var(--white);
+      border: 3px solid var(--white);
+      border-radius: 16px;
+      box-shadow: 0 5px 12px rgba(0, 25, 101, 0.13);
+      text-align: center;
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .room.blue {
+      background: var(--nn-blue);
+    }
+
+    .room.navy {
+      background: var(--nn-navy);
+    }
+
+    .room.cyan {
+      color: var(--nn-deep-navy);
+      background: #65dded;
+    }
+
+    .room.teal {
+      background: #008b9a;
+    }
+
+    .room.orange {
+      color: #351400;
+      background: #ff9d35;
+    }
+
+    .room.green {
+      color: #082d24;
+      background: #7fd6bc;
+    }
+
+    .room.purple {
+      background: #7351a3;
+    }
+
+    .room.terrace {
+      color: var(--nn-deep-navy);
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #d8f3df,
+          #d8f3df 18px,
+          #caecd5 18px,
+          #caecd5 36px
+        );
+    }
+
+    .room.foyer {
+      color: var(--nn-deep-navy);
+      background: #eef2f5;
+      border-color: #ffffff;
+    }
+
+    /* Lokation */
+
+    .location-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 22px;
+      padding: 26px;
+    }
+
+    .location-card h3 {
+      margin-bottom: 7px;
+    }
+
+    .location-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .venue-map {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 0.8fr;
+      gap: 8px;
+      min-height: 380px;
+      padding: 16px;
+      background: #e5ebee;
+      border: 1px solid #cbdce6;
+      border-radius: 18px;
+    }
+
+    .venue-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      border: 3px solid var(--white);
+      border-radius: 15px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .venue-main {
+      color: var(--white);
+      background: var(--nn-navy);
+    }
+
+    .venue-dinner {
+      color: var(--white);
+      background: var(--nn-blue);
+    }
+
+    .venue-parking {
+      color: var(--nn-deep-navy);
+      background: #bdeafb;
+    }
+
+    .site-footer {
+      padding: 32px 16px 36px;
+      background: rgba(255, 255, 255, 0.8);
+      border-top: 1px solid rgba(0, 25, 101, 0.08);
+      text-align: center;
+    }
+
+    .site-footer p {
+      margin: 4px 0;
+      color: var(--nn-deep-navy);
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .footer-dot {
+      color: var(--nn-cyan);
+    }
+
+    .route-error {
+      padding: 60px 30px;
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      .groups-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .result-item:nth-child(2) {
+        border-right: 0;
+      }
+
+      .result-item:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .agenda-row {
+        grid-template-columns: 40px 105px minmax(0, 1fr) 30px;
+        gap: 10px;
+        padding: 16px;
+      }
+
+      .link-panel,
+      .location-card,
+      .find-callout {
+        grid-template-columns: 1fr;
+      }
+
+      .room-map {
+        min-height: 620px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+
+      .room {
+        grid-column: auto !important;
+        grid-row: auto !important;
+      }
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding-bottom: 72px;
+      }
+
+      .site-header {
+        position: static;
+      }
+
+      .nav {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+        min-height: 68px;
+        justify-content: space-around;
+        gap: 0;
+        padding: 4px 6px;
+        background: rgba(255, 255, 255, 0.97);
+        border-top: 1px solid rgba(0, 25, 101, 0.1);
+        box-shadow: 0 -8px 25px rgba(0, 25, 101, 0.08);
+      }
+
+      .nav-link {
+        padding: 12px 6px;
+        font-size: 0.72rem;
+      }
+
+      .nav-link::after {
+        right: 5px;
+        left: 5px;
+      }
+
+      .page-shell {
+        width: min(100% - 20px, var(--content-width));
+        padding-top: 20px;
+      }
+
+      .page-hero {
+        padding: 30px 24px;
+        border-radius: 22px;
+      }
+
+      .lead {
+        font-size: 1rem;
+      }
+
+      .agenda-row {
+        grid-template-columns: 36px minmax(0, 1fr) 26px;
+      }
+
+      .agenda-time {
+        grid-column: 2;
+        font-size: 0.84rem;
+      }
+
+      .agenda-content {
+        grid-column: 2;
+      }
+
+      .agenda-arrow {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+      }
+
+      .agenda-number {
+        grid-row: 1 / span 2;
+        width: 34px;
+        height: 34px;
+      }
+
+      .search-card {
+        padding: 20px;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-item,
+      .result-item:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .result-item:last-child {
+        border-bottom: 0;
+      }
+
+      .venue-map {
+        min-height: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .venue-block {
+        min-height: 130px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primær navigation">
+      <a class="nav-link" href="#agenda" data-route="agenda">Agenda</a>
+      <a class="nav-link" href="#find" data-route="find">Find mig</a>
+      <a class="nav-link" href="#ai" data-route="ai">AI Speed Dating</a>
+      <a class="nav-link" href="#goboat" data-route="goboat">GoBoat</a>
+      <a class="nav-link" href="#dinner" data-route="dinner">Middag</a>
+    </nav>
+  </header>
+
+  <main id="app" class="page-shell"></main>
+
+  <footer class="site-footer">
+    <p><span class="footer-dot">●</span> OPP Seminar</p>
+    <p>Designed and Coded By FCI & KUQA</p>
+  </footer>
+
+  <script>
+    "use strict";
+
+    /* =========================================================
+       1. INDSTILLINGER
+
+       Ret adresser, tider og tekster her.
+       ========================================================= */
+
+    const EVENT_CONFIG = {
+      title: "OPP Seminar",
+      tagline: "En dag med ny viden, fælles oplevelser og gode samtaler.",
+
+      seminarLocation: "Indsæt seminaradresse",
+      seminarMapUrl: "https://www.google.com/maps",
+
+      goBoatAddress: "Islands Brygge 10, 2300 København S",
+      goBoatMapUrl:
+        "https://www.google.com/maps/search/?api=1&query=Islands+Brygge+10+2300+København+S",
+
+      dinnerLocation: "Vestauranten, DGI Byen",
+      dinnerAddress: "Tietgensgade 65, 1704 København V",
+      dinnerMapUrl:
+        "https://www.google.com/maps/search/?api=1&query=Tietgensgade+65+1704+København+V"
+    };
+
+    /*
+      Alle initialer fra den fremsendte liste.
+
+      Når deltagerlisten ændres, skal du blot rette denne tekst.
+      Grupperne bliver automatisk genereret på ny.
+    */
+    const PARTICIPANTS_TEXT = `
+      ABVH AETI AGSF AHQS AHVI ANEC ANLH BEHO BMET BNYS
+      BTEN BTNL CDJA CITK CNQU COVE CRYE CWO DSMV EAKL
+      EAOJ EEHF EENM EJJN EMFT FCI FDKO FHAZ FMU GJHN
+      GJN GKLU HEPI HHAQ HNCR HSEZ HUEI HVLC IAOD IEPE
+      IMLE INGC ISFI JDMV JKBR JNVJ JOFQ JVGK KBNP KDUH
+      KHDY KJUS KKTD KPKV KTEQ KUQA LCXS LHOB LIAB LLHR
+      LNBF LSHS LVPM LWLA MCEN MDU MEBG MEDL MJKL MJRI
+      MMTX MNXH MOVI MZBC NHPS NJSQ NOCB NOEZ NRBL NRDI
+      NVPO OLYE OSCF PCW PNKF PTSM QMBG QRAA RCUM RJQN
+      RMTE RQBK RQOC RSVJ SDCZ SEEZ SFWT SHUC SIGL SNGJ
+      SPQF SQRF SWQE SXJM SZYI TGJJ TKGR TRMG UATS UHKH
+      UNBG VCTE VMKT WADS YSIK ZJHH ZLBK ZSLU ZSQN
+    `;
+
+    const participants = [...new Set(
+      PARTICIPANTS_TEXT
+        .trim()
+        .split(/\s+/)
+        .map(initials => initials.toUpperCase())
+        .filter(Boolean)
+    )];
+
+    /* =========================================================
+       2. AUTOMATISK GRUPPEFORDELING
+
+       Der anvendes forskellige faste blandinger til hver aktivitet.
+       Det betyder, at grupperne forbliver de samme efter genindlæsning.
+       ========================================================= */
+
+    function createSeededRandom(seedText) {
+      let seed = 2166136261;
+
+      for (let index = 0; index < seedText.length; index++) {
+        seed ^= seedText.charCodeAt(index);
+        seed = Math.imul(seed, 16777619);
+      }
+
+      return function random() {
+        seed += 0x6D2B79F5;
+
+        let value = seed;
+        value = Math.imul(value ^ (value >>> 15), value | 1);
+        value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+
+        return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function seededShuffle(items, seedText) {
+      const result = [...items];
+      const random = createSeededRandom(seedText);
+
+      for (let index = result.length - 1; index > 0; index--) {
+        const target = Math.floor(random() * (index + 1));
+        [result[index], result[target]] = [result[target], result[index]];
+      }
+
+      return result;
+    }
+
+    function makeBalancedGroups(items, numberOfGroups, seedText) {
+      const shuffled = seededShuffle(items, seedText);
+      const groups = Array.from({ length: numberOfGroups }, () => []);
+
+      shuffled.forEach((participant, index) => {
+        groups[index % numberOfGroups].push(participant);
+      });
+
+      groups.forEach(group => group.sort());
+
+      return groups;
+    }
+
+    /*
+      Hvis du senere vil indsætte de endelige grupper manuelt,
+      kan du erstatte makeBalancedGroups(...) med arrays som:
+
+      [
+        ["ABVH", "FCI", "KUQA"],
+        ["AETI", "AGSF", "AHQS"]
+      ]
+    */
+    const groups = {
+      evolve: makeBalancedGroups(participants, 6, "OPP-EVOLVE-2026"),
+      ai: makeBalancedGroups(participants, 4, "OPP-AI-2026"),
+      goBoat: makeBalancedGroups(participants, 8, "OPP-GOBOAT-2026"),
+      dinner: makeBalancedGroups(participants, 12, "OPP-DINNER-2026")
+    };
+
+    const evolveRooms = [
+      "Vesterbro Torv",
+      "Enghave Plads",
+      "Foye",
+      "Kødbyen",
+      "Tagterrassen",
+      "Tivoli"
+    ];
+
+    const aiRooms = [
+      "Escape Room",
+      "Private Room",
+      "Prompt Heaven",
+      "Dating Lounge"
+    ];
+
+    const aiRotations = [
+      ["Escape Room", "Private Room", "Prompt Heaven", "Dating Lounge"],
+      ["Private Room", "Prompt Heaven", "Dating Lounge", "Escape Room"],
+      ["Prompt Heaven", "Dating Lounge", "Escape Room", "Private Room"],
+      ["Dating Lounge", "Escape Room", "Private Room", "Prompt Heaven"]
+    ];
+
+    /* =========================================================
+       3. HJÆLPEFUNKTIONER
+       ========================================================= */
+
+    const app = document.getElementById("app");
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&")
+        .replaceAll("<", "<")
+        .replaceAll(">", ">")
+        .replaceAll('"', """)
+        .replaceAll("'", "&#039;");
+    }
+
+    function getRoute() {
+      return window.location.hash.replace("#", "").toLowerCase() || "agenda";
+    }
+
+    function setActiveNavigation(route) {
+      document.querySelectorAll(".nav-link").forEach(link => {
+        link.classList.toggle(link.dataset.route === route, "active");
+      });
+    }
+
+    function getGroupNumber(collection, initials) {
+      return collection.findIndex(group => group.includes(initials)) + 1;
+    }
+
+    function createHero({
+      eyebrow,
+      title,
+      lead = "",
+      light = false
+    }) {
+      return `
+        <section class="page-hero ${light ? "light" : ""}">
+          <p class="eyebrow">${escapeHtml(eyebrow)}</p>
+          <h1>${title}</h1>
+          ${lead ? `<p class="lead">${escapeHtml(lead)}</p>` : ""}
+        </section>
+      `;
+    }
+
+    function createGroupCards(collection, titlePrefix, roomNames = []) {
+      return `
+        <div class="groups-grid">
+          ${collection.map((members, index) => `
+            <article class="group-card card">
+              <header class="group-header">
+                <span class="group-icon" aria-hidden="true">♙</span>
+
+                <h3>${escapeHtml(titlePrefix)} ${index + 1}</h3>
+
+                ${
+                  roomNames[index]
+                    ? `<span class="group-room">${escapeHtml(roomNames[index])}</span>`
+                    : ""
+                }
+              </header>
+
+              <ul class="members">
+                ${members.map(member => `
+                  <li class="member">${escapeHtml(member)}</li>
+                `).join("")}
+              </ul>
+            </article>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    /* =========================================================
+       4. AGENDA
+       ========================================================= */
+
+    const agenda = [
+      {
+        time: "08:00–09:00",
+        title: "Morgenmad",
+        description: "Morgenmad er valgfri."
+      },
+      {
+        time: "09:00–09:30",
+        title: "Velkomst",
+        description: "Velkommen og introduktion til dagens program."
+      },
+      {
+        time: "09:30–12:00",
+        title: "eVolve Workshop",
+        description: "Workshop og samarbejde i egne teams.",
+        route: "evolve"
+      },
+      {
+        time: "12:00–13:00",
+        title: "Frokost",
+        description: "Frokost og mulighed for networking."
+      },
+      {
+        time: "13:00–15:00",
+        title: "AI Speed Dating – oplev AI",
+        description: "Fire rotationer med forskellige AI-oplevelser.",
+        route: "ai"
+      },
+      {
+        time: "15:00–15:15",
+        title: "Pause",
+        description: "Kort pause."
+      },
+      {
+        time: "15:15–15:45",
+        title: "Gåtur til GoBoat",
+        description: "Vi går samlet til GoBoat."
+      },
+      {
+        time: "15:45–17:30",
+        title: "GoBoat",
+        description: "Se din gruppe og praktisk information.",
+        route: "goboat"
+      },
+      {
+        time: "17:30–18:00",
+        title: "Transport til middag",
+        description: "Vi går samlet videre til middagen."
+      },
+      {
+        time: "18:00–",
+        title: "Middag, networking og fest",
+        description: "Se dit bord og lokationsinformation.",
+        route: "dinner"
+      }
+    ];
+
+    function renderAgenda() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "Sammen om fremtiden",
+          title: 'OPP Seminar <span class="hero-highlight">2026</span>',
+          lead: EVENT_CONFIG.tagline
+        })}
+
+        <section>
+          <p class="eyebrow">Dagens program</p>
+          <h2>Agenda</h2>
+
+          <div class="agenda-list card">
+            ${agenda.map((item, index) => `
+              <div class="agenda-row ${item.route ? "has-link" : ""}">
+                <span class="agenda-number">${index + 1}</span>
+
+                <div class="agenda-time">
+                  ${escapeHtml(item.time)}
+                </div>
+
+                <div class="agenda-content">
+                  <div class="agenda-title">
+                    ${escapeHtml(item.title)}
+                  </div>
+
+                  <p class="agenda-description">
+                    ${escapeHtml(item.description)}
+                  </p>
+                </div>
+
+                ${
+                  item.route
+                    ? `
+                      <a
+                        class="agenda-arrow"
+                        href="#${item.route}"
+                        aria-label="Åbn ${escapeHtml(item.title)}"
+                      >→</a>
+                    `
+                    : "<span></span>"
+                }
+              </div>
+            `).join("")}
+          </div>
+        </section>
+
+        <section class="find-callout card">
+          <div>
+            <p class="eyebrow">Din personlige oversigt</p>
+            <h2>Find mig</h2>
+
+            <p>
+              Søg på dine initialer og se dit eVolve-team,
+              din AI-gruppe, dit GoBoat-hold og dit middagsbord.
+            </p>
+          </div>
+
+          <a class="button" href="#find">
+            Søg efter mine initialer →
+          </a>
+        </section>
+      `;
+    }
+
+    /* =========================================================
+       5. FIND MIG
+       ========================================================= */
+
+    function renderFind() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "Din personlige oversigt",
+          title: "Find mig",
+          lead: "Søg på dine initialer og få hele din personlige dagsoversigt.",
+          light: true
+        })}
+
+        <section class="search-card card">
+          <label class="search-label" for="initialSearch">
+            Skriv dine initialer
+          </label>
+
+          <div class="search-wrapper">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+
+            <input
+              id="initialSearch"
+              class="search-input"
+              type="search"
+              placeholder="For eksempel FCI eller KUQA"
+              maxlength="12"
+              autocomplete="off"
+              spellcheck="false"
+            >
+          </div>
+
+          <p class="search-help">
+            Du kan også søge efter flere personer ved at adskille
+            initialerne med komma eller mellemrum.
+          </p>
+        </section>
+
+        <section id="searchResults" class="search-results" aria-live="polite">
+          <div class="empty-state card">
+            <p>
+              Indtast dine initialer ovenfor for at se din personlige oversigt.
+            </p>
+          </div>
+        </section>
+      `;
+
+      initialiseSearch();
+    }
+
+    function createPersonResult(initials) {
+      const evolveGroup = getGroupNumber(groups.evolve, initials);
+      const aiGroup = getGroupNumber(groups.ai, initials);
+      const goBoatGroup = getGroupNumber(groups.goBoat, initials);
+      const dinnerTable = getGroupNumber(groups.dinner, initials);
+
+      return `
+        <article class="person-result card">
+          <header class="person-result-header">
+            <h3>${escapeHtml(initials)}</h3>
+            <span>Personlig oversigt</span>
+          </header>
+
+          <div class="result-grid">
+            <div class="result-item">
+              <span class="result-label">eVolve Workshop</span>
+
+              <div class="result-value">
+                Team ${evolveGroup}<br>
+                ${escapeHtml(evolveRooms[evolveGroup - 1])}
+              </div>
+            </div>
+
+            <div class="result-item">
+              <span class="result-label">AI Speed Dating</span>
+
+              <div class="result-value">
+                AI-gruppe ${aiGroup}
+              </div>
+            </div>
+
+            <div class="result-item">
+              <span class="result-label">GoBoat</span>
+
+              <div class="result-value">
+                GoBoat-gruppe ${goBoatGroup}
+              </div>
+            </div>
+
+            <div class="result-item">
+              <span class="result-label">Middag</span>
+
+              <div class="result-value">
+                Bord ${dinnerTable}
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function initialiseSearch() {
+      const input = document.getElementById("initialSearch");
+      const results = document.getElementById("searchResults");
+
+      function updateResults() {
+        const query = input.value.toUpperCase().trim();
+
+        if (!query) {
+          results.innerHTML = `
+            <div class="empty-state card">
+              <p>
+                Indtast dine initialer ovenfor for at se din personlige oversigt.
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        const searches = [...new Set(
+          query
+            .split(/[\s,;]+/)
+            .map(value => value.trim())
+            .filter(Boolean)
+        )];
+
+        const exactMatches = searches.filter(initials =>
+          participants.includes(initials)
+        );
+
+        if (exactMatches.length > 0) {
+          results.innerHTML = exactMatches
+            .map(createPersonResult)
+            .join("");
+
+          return;
+        }
+
+        const suggestions = participants
+          .filter(initials => initials.includes(searches[0] || ""))
+          .slice(0, 10);
+
+        results.innerHTML = `
+          <div class="empty-state card">
+            <p>
+              Vi kunne ikke finde <strong>${escapeHtml(query)}</strong>.
+              Kontrollér stavningen og prøv igen.
+            </p>
+
+            ${
+              suggestions.length
+                ? `
+                  <div class="suggestions">
+                    ${suggestions.map(initials => `
+                      <button
+                        class="suggestion"
+                        type="button"
+                        data-suggestion="${escapeHtml(initials)}"
+                      >
+                        ${escapeHtml(initials)}
+                      </button>
+                    `).join("")}
+                  </div>
+                `
+                : ""
+            }
+          </div>
+        `;
+
+        document.querySelectorAll("[data-suggestion]").forEach(button => {
+          button.addEventListener("click", () => {
+            input.value = button.dataset.suggestion;
+            updateResults();
+          });
+        });
+      }
+
+      input.addEventListener("input", updateResults);
+      input.focus();
+    }
+
+    /* =========================================================
+       6. EVOLVE WORKSHOP
+       ========================================================= */
+
+    function renderEvolve() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "09:30–12:00",
+          title: "eVolve Workshop",
+          lead: "Find dit team og det lokale, hvor workshoppen afholdes.",
+          light: true
+        })}
+
+        <section>
+          <h2>Teams og rum</h2>
+
+          <div class="table-card card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Team</th>
+                  <th>Lokale</th>
+                  <th>Antal deltagere</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                ${groups.evolve.map((group, index) => `
+                  <tr>
+                    <td>Team ${index + 1}</td>
+                    <td>${escapeHtml(evolveRooms[index])}</td>
+                    <td>${group.length}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-heading">Rumoversigt</h2>
+
+          <p class="section-intro">
+            Dette er en skematisk oversigt. Den kan efterfølgende
+            udskiftes med afdelingens endelige plantegning.
+          </p>
+
+          <div class="room-map-card card">
+            <div class="room-map">
+              <div
+                class="room terrace"
+                style="grid-column: 1 / 3; grid-row: 1 / 5;"
+              >
+                Tagterrassen / Team 5
+              </div>
+
+              <div
+                class="room orange"
+                style="grid-column: 3; grid-row: 1;"
+              >
+                Tivoli / Team 6
+              </div>
+
+              <div
+                class="room teal"
+                style="grid-column: 3; grid-row: 2;"
+              >
+                Vesterbro Torv / Team 1
+              </div>
+
+              <div
+                class="room cyan"
+                style="grid-column: 3; grid-row: 3;"
+              >
+                Enghave Plads / Team 2
+              </div>
+
+              <div
+                class="room blue"
+                style="grid-column: 3; grid-row: 4;"
+              >
+                Kødbyen / Team 4
+              </div>
+
+              <div
+                class="room foyer"
+                style="grid-column: 4; grid-row: 1 / 4;"
+              >
+                Foye / Team 3
+              </div>
+
+              <div
+                class="room navy"
+                style="grid-column: 4; grid-row: 4;"
+              >
+                Trappe og elevator
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Teamoversigt</h2>
+
+          ${createGroupCards(groups.evolve, "Team", evolveRooms)}
+        </section>
+      `;
+    }
+
+    /* =========================================================
+       7. AI SPEED DATING
+       ========================================================= */
+
+    function renderAI() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "13:00–15:00",
+          title: "AI Speed Dating – oplev AI",
+          lead: "Følg din AI-gruppe gennem fire runder. Der er rotation mellem hvert lokale.",
+          light: true
+        })}
+
+        <section>
+          <p class="eyebrow">AI Speed Dating</p>
+          <h2>Rotationsskema</h2>
+
+          <p class="section-intro">
+            Hver gruppe besøger alle fire oplevelser i løbet af aktiviteten.
+          </p>
+
+          <div class="table-card card">
+            <table>
+              <thead>
+                <tr>
+                  <th>Gruppe</th>
+                  <th>Runde 1 <small>13:25–13:40</small></th>
+                  <th>Runde 2 <small>13:45–14:00</small></th>
+                  <th>Runde 3 <small>14:05–14:20</small></th>
+                  <th>Runde 4 <small>14:25–14:40</small></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                ${aiRotations.map((rotation, index) => `
+                  <tr>
+                    <td>AI-gruppe ${index + 1}</td>
+                    ${rotation.map(room => `
+                      <td>${escapeHtml(room)}</td>
+                    `).join("")}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Rumoversigt</h2>
+
+          <div class="room-map-card card">
+            <div class="room-map">
+              <div
+                class="room terrace"
+                style="grid-column: 1 / 3; grid-row: 1 / 5;"
+              >
+                Tagterrasse
+              </div>
+
+              <div
+                class="room orange"
+                style="grid-column: 3; grid-row: 1;"
+              >
+                Dating Lounge
+              </div>
+
+              <div
+                class="room teal"
+                style="grid-column: 3; grid-row: 2;"
+              >
+                Prompt Heaven
+              </div>
+
+              <div
+                class="room purple"
+                style="grid-column: 3; grid-row: 3;"
+              >
+                Private Room
+              </div>
+
+              <div
+                class="room blue"
+                style="grid-column: 3; grid-row: 4;"
+              >
+                Escape Room
+              </div>
+
+              <div
+                class="room foyer"
+                style="grid-column: 4; grid-row: 1 / 5;"
+              >
+                Fællesområde, elevator og toiletter
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>AI-grupper</h2>
+
+          ${createGroupCards(groups.ai, "AI-gruppe")}
+        </section>
+      `;
+    }
+
+    /* =========================================================
+       8. GOBOAT
+       ========================================================= */
+
+    function renderGoBoat() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "15:45–17:30",
+          title: "GoBoat",
+          lead: "Find din gruppe og se adressen for aktiviteten.",
+          light: true
+        })}
+
+        <section class="location-card card">
+          <div>
+            <p class="eyebrow">Mødested</p>
+            <h3>${escapeHtml(EVENT_CONFIG.goBoatAddress)}</h3>
+
+            <p>
+              Åbn adressen i kort på din telefon eller computer.
+            </p>
+          </div>
+
+          <a
+            class="button"
+            href="${escapeHtml(EVENT_CONFIG.goBoatMapUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Åbn adresse i kort →
+          </a>
+        </section>
+
+        <section class="section">
+          <h2>GoBoat-grupper</h2>
+
+          ${createGroupCards(groups.goBoat, "GoBoat-gruppe")}
+        </section>
+      `;
+    }
+
+    /* =========================================================
+       9. MIDDAG
+       ========================================================= */
+
+    function renderDinner() {
+      app.innerHTML = `
+        ${createHero({
+          eyebrow: "18:00–",
+          title: "Middag, networking og fest",
+          lead: "Find dit middagsbord og praktisk information om lokationen.",
+          light: true
+        })}
+
+        <section class="location-card card">
+          <div>
+            <p class="eyebrow">Middag</p>
+            <h3>${escapeHtml(EVENT_CONFIG.dinnerLocation)}</h3>
+
+            <p>
+              ${escapeHtml(EVENT_CONFIG.dinnerAddress)}
+            </p>
+          </div>
+
+          <a
+            class="button"
+            href="${escapeHtml(EVENT_CONFIG.dinnerMapUrl)}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Åbn lokation i kort →
+          </a>
+        </section>
+
+        <section class="section">
+          <h2>Lokationsoversigt</h2>
+
+          <div class="room-map-card card">
+            <div class="venue-map">
+              <div class="venue-block venue-main">
+                Konferenceområde
+              </div>
+
+              <div class="venue-block venue-dinner">
+                ${escapeHtml(EVENT_CONFIG.dinnerLocation)}
+              </div>
+
+              <div class="venue-block venue-parking">
+                Parkering og hovedindgang
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Middagsborde</h2>
+
+          ${createGroupCards(groups.dinner, "Bord")}
+        </section>
+      `;
+    }
+
+    /* =========================================================
+       10. ROUTER
+       ========================================================= */
+
+    const routes = {
+      agenda: renderAgenda,
+      find: renderFind,
+      evolve: renderEvolve,
+      ai: renderAI,
+      goboat: renderGoBoat,
+      dinner: renderDinner
+    };
+
+    function renderRoute() {
+      const route = getRoute();
+      const renderer = routes[route];
+
+      setActiveNavigation(route);
+
+      if (!renderer) {
+        app.innerHTML = `
+          <section class="route-error card">
+            <h1>Siden blev ikke fundet</h1>
+            <p>Gå tilbage til agendaen for at fortsætte.</p>
+            <a class="button" href="#agenda">Åbn agenda</a>
+          </section>
+        `;
+        return;
+      }
+
+      renderer();
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener("hashchange", renderRoute);
+    window.addEventListener("DOMContentLoaded", renderRoute);
+  </script>
+</body>
+</html>
